@@ -42,3 +42,7 @@ body{
     border-radius: 5px;
     cursor: pointer;
 }
+.weui_search{
+    width: 65%;
+    margin:auto;
+}
