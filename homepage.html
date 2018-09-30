@@ -7,29 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="description">
 
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/weui.min.css">
-    <link rel="stylesheet" href="./css/jquery-weui.min.css">
+    <link rel="stylesheet" href="./css/main.css">>
+    <link rel="stylesheet" href="./css/datepicker.css">
 </head>
 <body>
 <div class="page">
    <div class="title">耐克下单列表</div>
-   <div class="weui_search">
-        <div class="weui-search-bar" id="searchBar">
-                <form class="weui-search-bar__form">
-                    <div class="weui-search-bar__box">
-                    <i class="weui-icon-search" style="cursor:pointer"></i>
-                    <input type="search" class="weui-search-bar__input" id="search_value" placeholder="搜索">
-                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
-                    </div>
-                    <label class="weui-search-bar__label" id="searchText">
-                    <i class="weui-icon-search" style="cursor:pointer"></i></i>
-                    <span>搜索</span>
-                    </label>
-                </form>
-                <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
-            </div>
+   <div class="datepicker_time">
+        <div class="c-datepicker-date-editor J-datepicker-range-day mt10">
+          <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+          <input placeholder="开始日期" name="" id="start_time" class="c-datepicker-data-input only-date" value="">
+          <span class="c-datepicker-range-separator">-</span>
+          <input placeholder="结束日期" name="" id="end_time" class="c-datepicker-data-input only-date" value="">
         </div>
+        <button style="padding:7px 20px;position: relative;top:-3px;" onclick="search()">搜索</button>
+    </div>
    <div class="ul_table text_center">
        <table>
            <thead>
@@ -62,7 +54,8 @@
    </div>
 </div>
 <script src="./jquery/jquery-2.1.4.js"></script>
-<script src="./jquery/jquery-weui.min.js"></script>
+<script src="./jquery/moment.min.js"></script>
+<script src="./jquery/datepicker.all.min.js"></script>
 <script type="text/javascript">
 
     //请求数据
@@ -112,14 +105,13 @@
         request();
     }
     // 搜索
-    $('#search_value').bind('keypress',function(event){     
-        // 获取搜索的值
-        var data = $('#search_value').val();
-        if (event.keyCode == 13) { 
-            request(data);  
-        }        
-    });
-
+    function search(){
+        var start_time = $('#start_time').val();
+        var end_time = $('#end_time').val();
+        var date = start_time +","+end_time;
+        console.log(date)
+        request(date);
+    }
 
     //定时请求接口
     var time = setInterval(function() {
@@ -132,5 +124,75 @@
     $(function(){
         // request();//调接口
     })
+
 </script>
+<script type="text/javascript">
+    $(function(){
+        var DATAPICKERAPI = {
+        // 默认input显示当前月,自己获取后填充
+        activeMonthRange: function () {
+          return {
+            begin: moment().set({ 'date': 1, 'hour': 0, 'minute': 0, 'second': 0 }).format('YYYY-MM-DD HH:mm:ss'),
+            end: moment().set({ 'hour': 23, 'minute': 59, 'second': 59 }).format('YYYY-MM-DD HH:mm:ss')
+          }
+        },
+        shortcutMonth: function () {
+          // 当月
+          var nowDay = moment().get('date');
+          var prevMonthFirstDay = moment().subtract(1, 'months').set({ 'date': 1 });
+          var prevMonthDay = moment().diff(prevMonthFirstDay, 'days');
+          return {
+            now: '-' + nowDay + ',0',
+            prev: '-' + prevMonthDay + ',-' + nowDay
+          }
+        },
+        // 注意为函数：快捷选项option:只能同一个月份内的
+        rangeMonthShortcutOption1: function () {
+          var result = DATAPICKERAPI.shortcutMonth();
+          return [{
+            name: '昨天',
+            day: '-1,-1',
+            time: '00:00:00,23:59:59'
+          }, {
+            name: '这一月',
+            day: result.now,
+            time: '00:00:00,'
+          }, {
+            name: '上一月',
+            day: result.prev,
+            time: '00:00:00,23:59:59'
+          }];
+        },
+        // 快捷选项option
+        rangeShortcutOption1: [{
+          name: '最近一周',
+          day: '-7,0'
+        }, {
+          name: '最近一个月',
+          day: '-30,0'
+        }, {
+          name: '最近三个月',
+          day: '-90, 0'
+        }],
+        singleShortcutOptions1: [{
+          name: '今天',
+          day: '0'
+        }, {
+          name: '昨天',
+          day: '-1',
+          time: '00:00:00'
+        }, {
+          name: '一周前',
+          day: '-7'
+        }]
+      };
+        //年月日范围
+        $('.J-datepicker-range-day').datePicker({
+            hasShortcut: true,
+            format: 'YYYY-MM-DD',
+            isRange: true,
+            shortcutOptions: DATAPICKERAPI.rangeShortcutOption1
+        });
+    });
+  </script>
 </body>
