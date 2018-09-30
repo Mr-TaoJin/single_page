@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <title>耐克下单列表</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="description">
+
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+<div class="page">
+   <div class="title">耐克下单列表</div>
+   <div class="ul_table text_center">
+       <table>
+           <thead>
+               <tr>
+                   <th>ID</th>
+                   <th>货号</th>
+                   <th>用户名</th>
+                   <th>开始时间</th>
+                   <th>订单状态</th>
+                   <th>下单时间</th>
+                   <th>付款按钮</th>
+               </tr>
+           </thead>
+           <tbody id="data">
+               <tr>
+                    <td>1</td>
+                    <td>12</td>
+                    <td>nai02153@deiie.com/Jp643125101	</td>
+                    <td>2018-09-30 20:53:36</td>
+                    <td>已付款</td>
+                    <td>2018-09-30 20:53:36</td>
+                    <td>
+                        <button onclick="payment()">去付款</button>
+                        <button onclick="payment_go()">付完款请点这儿</button>
+                    </td>
+                </tr>
+                <!-- <tr><td colspan="7">暂无数据</td></tr> -->
+           </tbody>
+       </table>
+   </div>
+</div>
+<script src="./jquery/jquery-2.1.4.js"></script>
+<script type="text/javascript">
+
+    //请求数据
+    function request(){
+        $.ajax({
+            "type":"post",//get/post
+            "url":"接口", 
+            "success":function(ret){
+                // 成功后进行dom操作
+                if(ret.isSuccess){ 
+                    // 拼接数据，js for循环    
+                    //  ``  动态数据渲染 例： {{ ret.result}}
+                    $("#data").html(`
+                        <tr>
+                            <td>{{ ret.result}}</td>
+                            <td>12</td>
+                            <td>nai02153@deiie.com/Jp643125101	</td>
+                            <td>2018-09-30 20:53:36</td>
+                            <td>已付款</td>
+                            <td>2018-09-30 20:53:36</td>
+                            <td>
+                                    <button onclick="payment()">去付款</button>
+                                    <button onclick="payment_go()">付完款请点这儿</button>
+                            </td>
+                        </tr>
+                    `
+                    );
+                }else{
+                    $("#data").html(
+                        `<tr><td colspan="7">暂无数据</td></tr>`
+                    )
+                }
+            }
+        })
+    }
+    // request();//调接口
+    //去付款
+    function payment(){
+        window.open('https://mapi.alipay.com/gateway.do?body=Nike+HK+Official+site.+Nike.com+PRODUCTS&total_fee=369.00&subject=Nike+HK+Official+site.+Nike.com+PRODUCTS&notify_url=http%3A%2F%2Fm.nike.com.hk%2Fpayment%2F22%2Ffeedback&service=create_forex_trade_wap&partner=2088611936615857&out_trade_no=NH35795036&timeout_rule=12h&return_url=http%3A%2F%2Fm.nike.com.hk%2Ftransaction%2FpaymentSuccess%2FNH35795036&currency=HKD&sign=c85358f428c44d4f8faf447bc75ae74c&sign_type=MD5',"_blank")
+    }
+    //付完款请点这儿
+    function payment_go(){
+        if(!confirm('确定已付款？')){
+            return false;
+        }
+        request();
+    }
+    
+</script>
+</body>

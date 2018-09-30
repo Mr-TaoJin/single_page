@@ -1,0 +1,44 @@
+body,h1,h2,h3,h4,h5,h5,p,ul,ol,dl,dd,pre{
+    margin:0;
+    padding:0;
+}
+img{
+    vertical-align:bottom;
+}
+i{
+    font-style: inherit;
+}
+body{
+    margin:0;
+    font:14px "微软雅黑",Arial,Helvetica,sans-serif;
+    color:#666;
+    background-color:rgb(246, 246, 246);
+}
+.text_center{
+    text-align: center;
+}
+.title{
+    text-align: center;
+    font-size:18px;
+    padding:20px;
+}
+.ul_table{
+    width: 65%;
+    margin:auto;
+}
+.ul_table table{
+    width: 100%;
+    border-collapse: collapse;
+} 
+.ul_table table th,.ul_table table td{
+    border:1px solid #ccc;
+    padding:8px 0;
+}
+.ul_table table td>button{
+    background: #03a9f4;
+    border:0;
+    padding:5px;
+    color:#fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
