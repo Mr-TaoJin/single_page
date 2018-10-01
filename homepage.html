@@ -21,9 +21,9 @@
           <input placeholder="结束日期" name="" id="end_time" class="c-datepicker-data-input only-date" value="">
         </div>
         <button style="padding:7px 20px;position: relative;top:-3px;" onclick="search()">搜索</button>
-        <button style="float:right;margin:5px 0 0 0;width:62px;" onclick="search(3)">已付款</button>
-        <button style="float:right;margin:5px 10px 0 0;width:62px;" onclick="search(2)">未付款</button>
-        <button style="float:right;margin:5px 10px 0 0;width:62px;" onclick="search(1)">全部</button>
+        <button style="float:right;margin:5px 0 0 0;width:62px;" onclick="request(3)">已付款</button>
+        <button style="float:right;margin:5px 10px 0 0;width:62px;" onclick="request(2)">未付款</button>
+        <button style="float:right;margin:5px 10px 0 0;width:62px;" onclick="request(1)">全部</button>
     </div>
    <div class="ul_table text_center">
        <table>
@@ -48,7 +48,7 @@
                     <td>2018-09-30 20:53:36</td>
                     <td>
                         <button onclick="payment()">去付款</button>
-                        <button onclick="payment_go()">付完款请点这儿</button>
+                        <button onclick="open_popup()">付完款请点这儿</button>
                     </td>
                 </tr>
                 <!-- <tr><td colspan="7">暂无数据</td></tr> -->
@@ -56,10 +56,23 @@
        </table>
    </div>
 </div>
+<!-- 自定义弹窗 -->
+<div class="mask"></div>
+<div class="popup" >
+    <p class="text_center" style="font-size:18px;color:#000;padding:10px;">确定已付款？</p>
+    <div class="popup_btn text_center">
+        <button style="width:62px;margin-right:20px;" onclick="request(2)">确定</button>
+        <button style="width:62px;background:#ccc;" onclick="close_popup()">取消</button>
+    </div>
+</div>
 <script src="./jquery/jquery-2.1.4.js"></script>
 <script src="./jquery/moment.min.js"></script>
 <script src="./jquery/datepicker.all.min.js"></script>
 <script type="text/javascript">
+    // 首次进入执行的js代码
+    $(function(){
+        // request();//调接口
+    })
 
     //请求数据
     function request(id){
@@ -83,7 +96,7 @@
                             <td>2018-09-30 20:53:36</td>
                             <td>
                                     <button onclick="payment()">去付款</button>
-                                    <button onclick="payment_go()">付完款请点这儿</button>
+                                    <button onclick="open_popup()">付完款请点这儿</button>
                             </td>
                         </tr>
                     `
@@ -100,13 +113,6 @@
     function payment(){
         window.open('https://mapi.alipay.com/gateway.do?body=Nike+HK+Official+site.+Nike.com+PRODUCTS&total_fee=369.00&subject=Nike+HK+Official+site.+Nike.com+PRODUCTS&notify_url=http%3A%2F%2Fm.nike.com.hk%2Fpayment%2F22%2Ffeedback&service=create_forex_trade_wap&partner=2088611936615857&out_trade_no=NH35795036&timeout_rule=12h&return_url=http%3A%2F%2Fm.nike.com.hk%2Ftransaction%2FpaymentSuccess%2FNH35795036&currency=HKD&sign=c85358f428c44d4f8faf447bc75ae74c&sign_type=MD5',"_blank")
     }
-    //付完款请点这儿
-    function payment_go(){
-        if(!confirm('确定已付款？')){
-            return false;
-        }
-        request();
-    }
     // 搜索
     function search(){
         var start_time = $('#start_time').val();
@@ -121,12 +127,17 @@
         console.log('123')
         // request();
     }, 3000);//设置请求
-    
 
-    // 首次进入执行的js代码
-    $(function(){
-        // request();//调接口
-    })
+    // 弹窗事件
+    function open_popup(){
+        $(".mask").css('display','block');
+        $(".popup").addClass('main').css('display','block');
+    }
+    // 关闭弹窗
+    function close_popup(){
+        $(".mask").css('display','none');
+        $(".popup").css('display','none');
+    }
 
 </script>
 <script type="text/javascript">
