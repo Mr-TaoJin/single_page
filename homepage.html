@@ -132,11 +132,13 @@
     function open_popup(){
         $(".mask").css('display','block');
         $(".popup").addClass('main').css('display','block');
+        $('body').css('overflow','hidden')
     }
     // 关闭弹窗
     function close_popup(){
         $(".mask").css('display','none');
         $(".popup").css('display','none');
+        $('body').css('overflow','auto')
     }
 
 </script>
